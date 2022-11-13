@@ -2,7 +2,7 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="true" >
     <!--    <springProperty scope="context" name="contextName" source="spring.application.name"/>-->
     <!--    <springProperty scope="context" name="logPath" source="logback.logpath"/>-->
-    <property name="contextName" value="chenyxSystem-data" />
+    <property name="contextName" value="trajectorySystem-data" />
     <property name="logPath" value="../log" />
     <contextName>${contextName}</contextName>
     <property name="LOG_HOME" value="${logPath}/${contextName}" />
