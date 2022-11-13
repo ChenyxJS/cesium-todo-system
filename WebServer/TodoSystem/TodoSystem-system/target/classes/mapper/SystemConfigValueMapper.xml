@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chenyx.mapper.SystemConfigValueMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.chenyx.entity.SystemConfigValue">
+        <id column="system_config_value_id" property="systemConfigValueId" />
+        <result column="scva_type_id" property="scvaTypeId" />
+        <result column="scva_value" property="scvaValue" />
+        <result column="scva_code" property="scvaCode" />
+        <result column="scva_status" property="scvaStatus" />
+        <result column="scva_db_create_date" property="scvaDbCreateDate" />
+        <result column="scva_db_update_date" property="scvaDbUpdateDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        system_config_value_id, scva_type_id, scva_value, scva_code, scva_status, scva_db_create_date, scva_db_update_date
+    </sql>
+
+</mapper>

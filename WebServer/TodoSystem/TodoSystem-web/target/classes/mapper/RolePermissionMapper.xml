@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chenyx.mapper.RolePermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.chenyx.entity.RolePermission">
+        <id column="rope_id" property="ropeId" />
+        <result column="rope_role_id" property="ropeRoleId" />
+        <result column="rope_perm_id" property="ropePermId" />
+        <result column="rope_org_id" property="ropeOrgId" />
+        <result column="rope_create_time" property="ropeCreateTime" />
+        <result column="rope_update_time" property="ropeUpdateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        rope_id, rope_role_id, rope_perm_id, rope_org_id, rope_create_time, rope_update_time
+    </sql>
+
+</mapper>

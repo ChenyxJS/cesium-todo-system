@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chenyx.mapper.UserOpenidMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.chenyx.entity.UserOpenid">
+        <id column="uop_id" property="uopId" />
+        <result column="uop_user_id" property="uopUserId" />
+        <result column="uop_openid" property="uopOpenid" />
+        <result column="uop_platform" property="uopPlatform" />
+        <result column="uop_appid" property="uopAppid" />
+        <result column="uop_remark" property="uopRemark" />
+        <result column="uop_status" property="uopStatus" />
+        <result column="uop_db_create_time" property="uopDbCreateTime" />
+        <result column="uop_db_update_time" property="uopDbUpdateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        uop_id, uop_user_id, uop_openid, uop_platform, uop_appid, uop_remark, uop_status, uop_db_create_time, uop_db_update_time
+    </sql>
+
+</mapper>

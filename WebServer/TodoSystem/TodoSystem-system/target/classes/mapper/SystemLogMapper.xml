@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chenyx.mapper.SystemLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.chenyx.entity.SystemLog">
+        <id column="sylo_id" property="syloId" />
+        <result column="sylo_login_user_id" property="syloLoginUserId" />
+        <result column="sylo_ip_address" property="syloIpAddress" />
+        <result column="sylo_request_data" property="syloRequestData" />
+        <result column="sylo_response_data" property="syloResponseData" />
+        <result column="sylo_create_time" property="syloCreateTime" />
+        <result column="sylo_description" property="syloDescription" />
+        <result column="sylo_request_url" property="syloRequestUrl" />
+        <result column="sylo_request_time" property="syloRequestTime" />
+        <result column="sylo_method_name" property="syloMethodName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        sylo_id, sylo_login_user_id, sylo_ip_address, sylo_request_data, sylo_response_data, sylo_create_time, sylo_description, sylo_request_url,
+sylo_request_time, sylo_method_name
+    </sql>
+    <insert id="insert" parameterType="com.chenyx.entity.SystemLog" >
+        insert into system_log (sylo_id, sylo_login_user_id, sylo_ip_address,
+                                sylo_create_time, sylo_description, sylo_request_url,
+                                sylo_request_time, sylo_method_name, sylo_request_data,
+                                sylo_response_data)
+        values (#{syloId,jdbcType=BIGINT}, #{syloLoginUserId,jdbcType=BIGINT}, #{syloIpAddress,jdbcType=VARCHAR},
+                #{syloCreateTime,jdbcType=TIMESTAMP}, #{syloDescription,jdbcType=VARCHAR}, #{syloRequestUrl,jdbcType=VARCHAR},
+                #{syloRequestTime,jdbcType=BIGINT}, #{syloMethodName,jdbcType=VARCHAR}, #{syloRequestData,jdbcType=LONGVARCHAR},
+                #{syloResponseData,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.chenyx.entity.SystemLog" >
+        insert into system_log
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="syloId != null" >
+                sylo_id,
+            </if>
+            <if test="syloLoginUserId != null" >
+                sylo_login_user_id,
+            </if>
+            <if test="syloIpAddress != null" >
+                sylo_ip_address,
+            </if>
+            <if test="syloCreateTime != null" >
+                sylo_create_time,
+            </if>
+            <if test="syloDescription != null" >
+                sylo_description,
+            </if>
+            <if test="syloRequestUrl != null" >
+                sylo_request_url,
+            </if>
+            <if test="syloRequestTime != null" >
+                sylo_request_time,
+            </if>
+            <if test="syloMethodName != null" >
+                sylo_method_name,
+            </if>
+            <if test="syloRequestData != null" >
+                sylo_request_data,
+            </if>
+            <if test="syloResponseData != null" >
+                sylo_response_data,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="syloId != null" >
+                #{syloId,jdbcType=BIGINT},
+            </if>
+            <if test="syloLoginUserId != null" >
+                #{syloLoginUserId,jdbcType=BIGINT},
+            </if>
+            <if test="syloIpAddress != null" >
+                #{syloIpAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="syloCreateTime != null" >
+                #{syloCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="syloDescription != null" >
+                #{syloDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="syloRequestUrl != null" >
+                #{syloRequestUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="syloRequestTime != null" >
+                #{syloRequestTime,jdbcType=BIGINT},
+            </if>
+            <if test="syloMethodName != null" >
+                #{syloMethodName,jdbcType=VARCHAR},
+            </if>
+            <if test="syloRequestData != null" >
+                #{syloRequestData,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="syloResponseData != null" >
+                #{syloResponseData,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

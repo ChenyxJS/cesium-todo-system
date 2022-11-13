@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chenyx.mapper.TodoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.chenyx.entity.Todo">
+        <id column="todo_id" property="todoId" />
+        <result column="todo_title" property="todoTitle" />
+        <result column="todo_type" property="todoType" />
+        <result column="todo_lng" property="todoLng" />
+        <result column="todo_lat" property="todoLat" />
+        <result column="todo_alt" property="todoAlt" />
+        <result column="todo_address" property="todoAddress" />
+        <result column="todo_desc" property="todoDesc" />
+        <result column="todo_start_time" property="todoStartTime" />
+        <result column="todo_end_time" property="todoEndTime" />
+        <result column="todo_create_time" property="todoCreateTime" />
+        <result column="todo_update_time" property="todoUpdateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        todo_id, todo_title, todo_type, todo_lng, todo_lat, todo_alt, todo_address, todo_desc, todo_start_time, todo_end_time, todo_create_time, todo_update_time
+    </sql>
+
+</mapper>
