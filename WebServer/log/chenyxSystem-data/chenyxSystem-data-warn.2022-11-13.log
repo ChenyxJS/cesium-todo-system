@@ -1,2 +1,0 @@
-2022-11-13 21:52:06.965    WARN  io.netty.resolver.dns.DnsServerAddressStreamProviders - Can not find io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider in the classpath, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS.
-2022-11-13 21:52:09.041    WARN  com.baomidou.mybatisplus.core.injector.AbstractMethod - [com.chenyx.mapper.SystemLogMapper.insert] Has been loaded by XML or SqlProvider or Mybatis's Annotation, so ignoring this injection for [class com.baomidou.mybatisplus.core.injector.methods.Insert]
