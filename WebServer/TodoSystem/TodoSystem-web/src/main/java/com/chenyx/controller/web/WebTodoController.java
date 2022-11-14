@@ -1,5 +1,6 @@
 package com.chenyx.controller.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.chenyx.aop.annotation.MyLog;
 import com.chenyx.entity.dto.TodoDTO;
 import com.chenyx.entity.query.TodoQuery;
@@ -43,13 +44,24 @@ public class WebTodoController {
     }
 
     /**
+     * 查询所有
+     *
+     * @return JsonResult
+     */
+    @GetMapping(value = "/getAll")
+    public JsonResult getAll(@ModelAttribute TodoQuery query) {
+        query.setLimit(0);
+        return service.selectAll(query);
+    }
+
+    /**
      * 根据主键删除
      *
      * @param id 主键
      * @return JsonResult
     */
     @MyLog(remark = "根据主键删除")
-    @PostMapping(value = "/delete")
+    @DeleteMapping(value = "/delete")
     public JsonResult delete(@RequestParam Long id,
                                     @RequestParam(required = false) Long bindLoginOperatorId,
                                     HttpSession session) {
