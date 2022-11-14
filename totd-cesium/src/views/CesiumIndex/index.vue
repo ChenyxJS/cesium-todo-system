@@ -15,7 +15,9 @@ import ShowLngLat from "@/components/ShowLngLat.vue";
 import FilterPanel from "./components/FilterPanel.vue";
 import TodoListPanel from "./components/TodoListPanel.vue";
 import EditPanel from "./components/EditPanel.vue";
-import {getAllTodoData} from '@/api/Todo/index'
+import { getAllTodoData } from "@/api/Todo/index";
+import { Page } from "@/utils/Interface/Page";
+
 
 export default defineComponent({
   name: "CesiumIndex",
@@ -36,9 +38,9 @@ export default defineComponent({
     const EditPanelRef = ref();
 
     onMounted(() => {
-      init()
+      init();
     });
-    const init = ()=>{
+    const init = () => {
       // 初始化Cesium控制器
       viewer.value = CController.init("cesiumContainer");
       // 注册点击事件
@@ -56,17 +58,25 @@ export default defineComponent({
       // 初始化实时坐标组件
       ShowLngLatRef.value.initCesiumHandler(viewer.value);
       // 获取数据
-      getTodoData()
-    } 
+      getTodoData();
+    };
 
-
-    const getTodoData = ()=>{
-      getAllTodoData(null).then((res:any)=>{
-        if(res.success){
-          CController.initEntityMap(res.root)
+    const getTodoData = () => {
+      getAllTodoData({
+        page: 1,
+        limit: 0,
+      }).then((res: any) => {
+        if (res.success) {
+          CController.initEntityMap(res.root);
+          let page: Page = {
+            limit: 10,
+            current: 1,
+            total: res.totalSize,
+          };
+          TodoListPanelRef.value.initData(res.root,page);
         }
-      })
-    }
+      });
+    };
 
     return {
       viewer,
@@ -75,7 +85,7 @@ export default defineComponent({
       FilterPanelRef,
       TodoListPanelRef,
       EditPanelRef,
-      getTodoData
+      getTodoData,
     };
   },
 });

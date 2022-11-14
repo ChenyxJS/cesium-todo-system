@@ -1,9 +1,11 @@
 import * as Cesium from "cesium";
 import { cesiumConfig } from '@/config'
 import { TODOPointTypeMap, getTODOPointType } from '@/utils/baseData'
+import { formatDate } from "@/utils/index";
 import { ref } from "vue";
 import { TODO } from '@/utils/Interface/TODO'
 
+// Cesium的token
 Cesium.Ion.defaultAccessToken = cesiumConfig.token
 
 
@@ -29,6 +31,8 @@ class CesiumController {
     editorEntityData?: TODO;
     // selectedEntity
     selectedEntity: any
+    // 实体数据列表
+    EntityDataList: any
 
 
     constructor() {
@@ -92,7 +96,7 @@ class CesiumController {
      */
     init(el: string, EntityDataList?: any) {
         // 初始化视图
-        const viewer = new Cesium.Viewer(el, {
+        this.viewer = new Cesium.Viewer(el, {
             // 是否显示信息窗口
             infoBox: false,
             // 是否创建动画
@@ -116,67 +120,51 @@ class CesiumController {
             // 地形
             terrainProvider: Cesium.createWorldTerrain()
         });
-
         // 镜头飞入
-        viewer.camera.flyTo({
+        this.viewer.camera.flyTo({
             destination: Cesium.Cartesian3.fromDegrees(118.2837, 35.1184, 1500),
             orientation: {
                 heading: Cesium.Math.toRadians(0),
-                // pitch: Cesium.Math.toRadians(-90),
                 roll: 0.0,
             },
         });
         // 开启深度检测
-        // viewer.scene.globe.depthTestAgainstTerrain = false;
-        viewer.scene.globe.depthTestAgainstTerrain = true;
-        this.viewer = viewer
+        this.viewer.scene.globe.depthTestAgainstTerrain = true;
         // 初始化实体集合
         this.initEntityMap(EntityDataList)
 
-        return viewer
+        return this.viewer
     }
     /**
      * @Descripttion: 初始化实体集合
      * @msg: 
      * @return {*}
      */
-    initEntityMap(EntityDataList?: any) {
+    initEntityMap(dataList?: any) {
+        this.EntityDataList = dataList
         // 地图初始化后夹在实体
-        if (EntityDataList) {
-            let pointList = this.createEntityByDataList(EntityDataList)
+        if (this.EntityDataList) {
+            let pointList = this.createEntityByDataList(this.EntityDataList)
             this.addEntity(pointList)
         }
     }
     /**
      * @Descripttion: 镜头飞到指定实体
      * @msg: 
-     * @param {number} lon
+     * @param {number} lng
      * @param {number} lat 
      * @param {number} alt 角度
      * @return {*}
      */
-    viewerflyToLonLat(lon: number, lat: number, alt: number) {
-        // 若已经有实体存在，则先移除该实体
-        if (this.entity) {
-            this.viewer.entities.remove(this.entity);
-        }
-        this.entity = new Cesium.Entity({
-            id: 'flyTmp',
-            position: Cesium.Cartesian3.fromDegrees(lon, lat),
-            point: {
-                pixelSize: 10,
-                color: Cesium.Color.WHITE.withAlpha(0.9),
-                outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
-                outlineWidth: 1
-            }
-        });
-        this.viewer.entities.add(this.entity);
-        this.viewer.flyTo(this.entity, {
-            offset: {
-                heading: Cesium.Math.toRadians(0.0),
-                pitch: Cesium.Math.toRadians(-25),
-                range: alt
-            }
+    viewerFlyToLngLat(id: string, lng: number, lat: number) {
+        const entity = this.viewer.entities.getById(id)
+        this.viewer._selectedEntity = entity
+        this.viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(lng, lat, 1500),
+            orientation: {
+                heading: Cesium.Math.toRadians(0),
+                roll: 0.0,
+            },
         });
     }
     /**
@@ -250,7 +238,26 @@ class CesiumController {
         // 判断该实体的信息窗口是否已经创建
         var InfoBoxDom: any = document.getElementById('EntityInfoBox_' + entity.id)
         if (!InfoBoxDom) {
-            // 未创建
+            // 获取该实体的信息
+            let todo: TODO = {
+                todoId: 0,
+                todoType: 1,
+                todoTitle: "todoTitle",
+                todoLng: 0,
+                todoLat: 0,
+                todoAlt: 0,
+                todoAddress: "todoAddress",
+                todoDesc: "todoDesc",
+                todoStartTime: new Date,
+                todoEndTime: new Date,
+            }
+            this.EntityDataList.forEach((item: TODO) => {
+                if (Number((entity.id).substring(5)) === item.todoId) {
+                    todo = item
+                }
+            })
+
+            // 创建信息面板
             const InfoBoxDom = document.createElement('div')
             InfoBoxDom.id = 'EntityInfoBox_' + entity.id
             InfoBoxDom.className = 'EntityInfoBox'
@@ -262,30 +269,37 @@ class CesiumController {
         <div class="EntityInfoBox_content" style="margin-top: 10px;display: flex;flex-direction:column;justify-content: center;align-items: flex-start;">
            <div class="EntityInfoBox_content-item" style="margin: 5px;">
              <span>事件名称：</span>
-             <span id="EntityInfoBox_content-item-text">${entity.id}</span>
+             <span id="EntityInfoBox_content-item-text">${todo.todoTitle}</span>
            </div>
            <div class="EntityInfoBox_content-item" style="margin: 5px;">
              <span>详细地址：</span>
-             <span id="EntityInfoBox_content-item-text">${entity.id}</span>
+             <span id="EntityInfoBox_content-item-text">${todo.todoAddress}</span>
            </div>
            <div class="EntityInfoBox_content-item" style="margin: 5px;">
              <span>开始时间：</span>
-             <span id="EntityInfoBox_content-item-text">${entity.id}</span>
+             <span id="EntityInfoBox_content-item-text">${formatDate(String(todo.todoStartTime))}</span>
+           </div>
+           <div class="EntityInfoBox_content-item" style="margin: 5px;">
+             <span>结束时间：</span>
+             <span id="EntityInfoBox_content-item-text">${formatDate(String(todo.todoEndTime))}</span>
            </div>
             <div class="EntityInfoBox_content-item" style="margin: 5px;">
              <span>事件详情：</span>
-             <span id="EntityInfoBox_content-item-text">${entity.id}</span>
+             <span id="EntityInfoBox_content-item-text">${todo.todoDesc}</span>
            </div>
          </div>
          <div class="triangle" style="border-top:0;border-left:20px solid #E5EAF3;border-right:0;border-bottom:30px solid transparent;position: absolute;bottom: -30px;left: calc(50% - 15px);width: 0;height: 0;"></div>
          `
+            // 将信息面板添加到页面dom中
             InfoBoxDom.innerHTML = infoDiv
             document.getElementById('cesiumContainer')?.appendChild(InfoBoxDom)
-            const deatilBtn = document.getElementById(`close-btn${entity.id}`)
-            deatilBtn?.addEventListener('click', () => {
+            // 给关闭按钮添加关闭点击事件
+            const closeBtn = document.getElementById(`close-btn${entity.id}`)
+            closeBtn?.addEventListener('click', () => {
                 InfoBoxDom.style.display = 'none'
             })
         }
+        // 显示信息窗口
         this.showEntityInfoBox(entity, position)
     }
     /**
@@ -335,14 +349,14 @@ class CesiumController {
         let list: any = []
         dataList.forEach((item: TODO) => {
             let pointType: any = {}
-            pointType = this.pointType[getTODOPointType(item.todoType)]
+            pointType = this.pointType[getTODOPointType(item.todoType).key]
             const position = this.lngAndlatTocartesian3(item.todoLng, item.todoLat, item.todoAlt)
             list.push(new Cesium.Entity({
-                id: 'totd' + item.todoType + item.todoId,
-                name: getTODOPointType(item.todoType),
+                id: 'todo' + item.todoType + item.todoId,
+                name: getTODOPointType(item.todoType).key,
                 position: position,
                 billboard: {
-                    image: `../../../public/${getTODOPointType(item.todoType)}.png`,
+                    image: `../../../public/${getTODOPointType(item.todoType).key}.png`,
                     //和原始大小相比的缩放比例
                     scale: 2,
                     disableDepthTestDistance: 99000000,
@@ -371,7 +385,7 @@ class CesiumController {
         }
         pointType = this.pointType[type]
         const Entity = new Cesium.Entity({
-            id: 'totd' + pointType.id + this.entityList.length,
+            id: 'todo' + pointType.id + this.entityList.length,
             name: type,
             position: position,
             billboard: {
@@ -430,7 +444,6 @@ class CesiumController {
                 this.viewer.entities.removeById(item.id)
             })
         } else {
-            console.log(`output->temp`,temp)
             this.viewer.entities.removeById(temp.id)
         }
     }

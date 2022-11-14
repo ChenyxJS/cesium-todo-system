@@ -2,7 +2,7 @@ import request from '@/utils/http/request'
 
 export function getAllTodoData(data:any){
     return request({
-        url:"/web/todo/selectByExample",
+        url:"/web/todo/getAll",
         method:"GET",
         data
     })

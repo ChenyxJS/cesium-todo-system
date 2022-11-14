@@ -4,7 +4,7 @@
  * @Author: Chenyx
  * @Date: 2022-10-16 00:50:35
  * @LastEditors: Chenyx
- * @LastEditTime: 2022-11-11 18:13:02
+ * @LastEditTime: 2022-11-13 23:57:22
  */
 
 /**
@@ -14,7 +14,7 @@
  * @param {String} format
  * @return {*}
  */
-export function formatDate(num: string, format: string) {
+export function formatDate(num: string, format?: string) {
     format = format || "YYYY-mm-dd HH:MM:SS";   //第一个参数不填时，使用默认格式
     let ret, date, renum;
     // 处理时间戳，js一般获取的时间戳是13位，PHP一般是10位,根据实际情况做判断处理

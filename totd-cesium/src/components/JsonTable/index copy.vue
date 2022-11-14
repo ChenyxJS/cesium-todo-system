@@ -196,28 +196,28 @@ export default {
   },
 
   watch: {
-    tableHeight(val) {
-      this.tableHeight =
-        window.innerHeight - this.$refs.jsonTable.$el.offsetTop - 130;
-      // 监听窗口大小变化
-      const self = this;
-      window.onresize = function () {
-        self.tableHeight =
-          window.innerHeight - self.$refs.jsonTable.$el.offsetTop - 130;
-      };
-    },
+    // tableHeight(val) {
+    //   this.tableHeight =
+    //     window.innerHeight - this.$refs.jsonTable.$el.offsetTop - 130;
+    //   // 监听窗口大小变化
+    //   const self = this;
+    //   window.onresize = function () {
+    //     self.tableHeight =
+    //       window.innerHeight - self.$refs.jsonTable.$el.offsetTop - 130;
+    //   };
+    // },
   },
   mounted() {
-    this.$nextTick(function () {
-      this.tableHeight =
-        window.innerHeight - this.$refs.jsonTable.$el.offsetTop - 130;
-      // 监听窗口大小变化
-      const self = this;
-      window.onresize = function () {
-        self.tableHeight =
-          window.innerHeight - self.$refs.jsonTable.$el.offsetTop - 130;
-      };
-    });
+    // this.$nextTick(function () {
+    //   this.tableHeight =
+    //     window.innerHeight - this.$refs.jsonTable.$el.offsetTop - 130;
+    //   // 监听窗口大小变化
+    //   const self = this;
+    //   window.onresize = function () {
+    //     self.tableHeight =
+    //       window.innerHeight - self.$refs.jsonTable.$el.offsetTop - 130;
+    //   };
+    // });
     // this.$refs.table.$el.offsetTop：表格距离浏览器的高度
   },
   methods: {

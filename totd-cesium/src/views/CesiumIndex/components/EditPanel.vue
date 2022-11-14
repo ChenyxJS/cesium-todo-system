@@ -76,7 +76,7 @@ import { addTodoData } from "@/api/Todo/index";
 
 export default defineComponent({
   name: "EditPanel",
-  setup(props,cxt) {
+  setup(props, cxt) {
     const _CController = ref();
     const editEntity = ref();
     let isShow = ref<boolean>();
@@ -107,8 +107,7 @@ export default defineComponent({
       clickHandler.setInputAction((e: any) => {
         // 延迟0.1s，等到点击事件改变isShowEditPanel的值后，再获取isShowEditPanel值以及获取TODO类数据
         setTimeout(() => {
-          editEntity.value = _CController.value.getSelectedEntity()
-          console.log(`output->editEntity.value`,editEntity.value)
+          editEntity.value = _CController.value.getSelectedEntity();
           form.value = _CController.value.getEditorEntityData();
           isShow.value = _CController.value.getIsShowEditPanel();
         }, 100);
@@ -123,6 +122,8 @@ export default defineComponent({
     const closeEditPanel = () => {
       isShow.value = false;
       _CController.value.closeEditPanel();
+      // 移除编辑实体
+      _CController.value.removeEntity(editEntity.value);
     };
 
     /**
@@ -140,11 +141,9 @@ export default defineComponent({
             message: "操作成功！",
           });
           // 关闭EditPanel
-          closeEditPanel()
+          closeEditPanel();
           // 重新获取数据刷新实体数据
-          cxt.emit("getTodoData")
-          // 移除编辑实体
-          _CController.value.removeEntity(editEntity.value)
+          cxt.emit("getTodoData");
         }
       });
     };
