@@ -43,14 +43,6 @@ export function getLoginRoleInfo(data) {
   })
 }
 
-//获取所属运营商工作人员信息
-export function getOperatorEmployeeList(data) {
-  return request({
-    url: '/admin/employee/selectByExample',
-    method: 'post',
-    data
-  })
-}
 
 
 //获取登陆人员的角色列表

@@ -37,7 +37,7 @@ import JsonFilter from '@/components/JsonFilter'
 import JsonTable from '@/components/JsonTable'
 import PermissionFilter from '@/components/PermissionFilter'
 import EditDialog from './components/EditDialog'
-import {getClubList} from "@/api/base-club";
+import {getClubList} from "@/api/base-todo";
 import {getUserList, deleteUser} from "@/api/base-user";
 
 export default {

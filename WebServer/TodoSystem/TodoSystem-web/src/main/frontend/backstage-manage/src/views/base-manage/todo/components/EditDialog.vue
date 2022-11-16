@@ -49,7 +49,7 @@ import visible from '@/mixins/edit-dialog'
 import {formatDate} from "@/utils";
 import {getHttp, getToken} from "@/api/qiniu";
 import {getUserList} from "@/api/base-user";
-import {insertClub, updateClub} from "@/api/base-club";
+import {insertClub, updateClub} from "@/api/base-todo";
 
 
 export default {

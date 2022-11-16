@@ -22,7 +22,7 @@ public class CreateCode {
                 "/TodoSystem-web/src/main",
                 "chenyx");
 
-        createCode.buildCode("todo");
+        createCode.buildCode("user_info");
     }
 
     private AutoGenerator autoGenerator;

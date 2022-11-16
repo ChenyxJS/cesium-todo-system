@@ -14,12 +14,6 @@ export const createStageRoutes = [
         name: 'permissionRole',
         meta: { title: '角色管理', noCache: true }
       },
-      {
-        path: '/permissionEmployee',
-        component: () => import('@/views/permission-manage/employee/index'),
-        name: 'permissionEmployee',
-        meta: { title: '系统人员管理', noCache: true }
-      }
     ]
   },
   {

@@ -60,85 +60,13 @@ public class UserInfo implements Serializable {
      */
     private String userPhone;
 
-    /**
-     * 身份证
-     */
-    private String userIdNumber;
 
     /**
      * 用户头像
      */
     private String userHeadImg;
 
-    /**
-     * 国家
-     */
-    private String userCountry;
 
-    /**
-     * 省份
-     */
-    private String userProvince;
-
-    /**
-     * 城市
-     */
-    private String userCity;
-
-    /**
-     * 县区
-     */
-    private String userArea;
-
-    /**
-     * 城镇
-     */
-    private String userTown;
-
-    /**
-     * 详细地址
-     */
-    private String userAddress;
-
-    /**
-     * 行政单位id
-     */
-    private Long userDepartmentId;
-
-    /**
-     * 行政单位名称
-     */
-    private String userDepartmentName;
-
-    /**
-     * 行政职位
-     */
-    private String userDepartmentPosition;
-
-    /**
-     * 律师所在公司id
-     */
-    private Long userComapnyId;
-
-    /**
-     * 律师所在公司名称
-     */
-    private String userCompanyName;
-
-    /**
-     * 律师职位
-     */
-    private String userCompanyPosition;
-
-    /**
-     * 律师等级
-     */
-    private String userLawyerLevel;
-
-    /**
-     * 律师处理次数
-     */
-    private Integer userLawyerNumber;
 
     private Date userCreateTime;
 
@@ -164,15 +92,7 @@ public class UserInfo implements Serializable {
      */
     private String userLastRoleName;
 
-    /**
-     * 上次登录机构id
-     */
-    private Long userLastOrgId;
 
-    /**
-     * 上次登录机构名称
-     */
-    private String userLastOrgName;
 
     /**
      * 上次登录时间

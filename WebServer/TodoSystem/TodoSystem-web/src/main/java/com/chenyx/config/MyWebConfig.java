@@ -1,6 +1,5 @@
 package com.chenyx.config;
 
-import com.chenyx.filter.permission.MiniPermissionFilter;
 import com.chenyx.filter.permission.PermissionFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +13,7 @@ import javax.annotation.Resource;
 public class MyWebConfig implements WebMvcConfigurer {
     @Resource
     private PermissionFilter permissionFilter;
-    @Resource
-    private MiniPermissionFilter miniPermissionFilter;
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/zxc/foo").setViewName("foo");
@@ -29,12 +27,6 @@ public class MyWebConfig implements WebMvcConfigurer {
         frBean.addUrlPatterns("/admin/*");
         return frBean;
     }
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    @Bean
-    public FilterRegistrationBean filterMiniRegist() {
-        FilterRegistrationBean frBean = new FilterRegistrationBean();
-        frBean.setFilter(miniPermissionFilter);
-        frBean.addUrlPatterns("/mp/*");
-        return frBean;
-    }
+
+
 }

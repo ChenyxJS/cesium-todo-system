@@ -5,7 +5,7 @@ import request from '@/utils/request'
  * */
 export function getClubList(data) {
   return request({
-    url: '/admin/club/selectByExample',
+    url: '/admin/todo/selectByExample',
     method: 'post',
     data
   })
@@ -15,7 +15,7 @@ export function getClubList(data) {
 
 export function insertClub(data) {
   return request({
-    url: '/admin/club/add',
+    url: '/admin/todo/add',
     method: 'post',
     data
   })
@@ -23,7 +23,7 @@ export function insertClub(data) {
 
 export function updateClub(data) {
   return request({
-    url: '/admin/club/update',
+    url: '/admin/todo/update',
     method: 'post',
     data
   })
@@ -31,7 +31,7 @@ export function updateClub(data) {
 
 export function deleteClub(data) {
   return request({
-    url: '/admin/club/delete',
+    url: '/admin/todo/delete',
     method: 'post',
     data
   })

@@ -1,12 +1,9 @@
 package com.chenyx.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.chenyx.entity.*;
-import com.chenyx.entity.dto.MiniProgramDTO;
 import com.chenyx.entity.dto.UserInfoDTO;
-import com.chenyx.entity.dto.UserOpenidDTO;
 import com.chenyx.entity.dto.UserRoleDTO;
 import com.chenyx.entity.enums.RequestEnum;
 import com.chenyx.entity.enums.UserInfoStatusEnum;
@@ -15,14 +12,11 @@ import com.chenyx.mapper.UserInfoMapper;
 import com.chenyx.service.*;
 import com.chenyx.util.*;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -47,10 +41,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     private ISystemConfigService systemConfigService;
     @Resource
     private IMiniProgramService miniProgramService;
-    @Resource
-    private IUserOpenidService userOpenidService;
-    @Resource
-    private IMiniRolePermissionService miniRolePermissionService;
+
 
     @Value("${myConfig.userDefaultHeadImg}")
     private String userDefaultHeadImg;
@@ -145,7 +136,6 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         UserInfoQuery userInfoQuery = new UserInfoQuery();
         userInfoQuery.setParam(new UserInfoDTO());
         userInfoQuery.getParam().setUserAccount(account);
-        userInfoQuery.setNotStatus(UserInfoStatusEnum.STATUS_cancellation.getCode());
         List<UserInfo> userInfos = list(userInfoQuery.buildExample());
         if (ListUtil.isEmpty(userInfos)) {
             jsonResult.buildFalseNew(RequestEnum.REQUEST_ERROR_LOGIN_INFO, "账号不存在");

@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Linda社团管理系统',
+  title: 'TodoSystem',
 
   showSettings: false,
 
