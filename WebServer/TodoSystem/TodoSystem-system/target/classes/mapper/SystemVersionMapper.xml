@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chenyx.mapper.SystemVersionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.chenyx.entity.SystemVersion">
+        <id column="system_version_id" property="systemVersionId" />
+        <result column="syve_operation_user_id" property="syveOperationUserId" />
+        <result column="syve_operation_ip" property="syveOperationIp" />
+        <result column="syve_number" property="syveNumber" />
+        <result column="syve_parent_id" property="syveParentId" />
+        <result column="syve_type" property="syveType" />
+        <result column="syve_status" property="syveStatus" />
+        <result column="syve_log" property="syveLog" />
+        <result column="syve_db_create_date" property="syveDbCreateDate" />
+        <result column="syve_db_update_date" property="syveDbUpdateDate" />
+        <result column="syve_update_pack_url" property="syveUpdatePackUrl" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        system_version_id, syve_operation_user_id, syve_operation_ip, syve_number, syve_parent_id, syve_type, syve_status, syve_log, syve_db_create_date, syve_db_update_date, syve_update_pack_url
+    </sql>
+
+</mapper>

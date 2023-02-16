@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chenyx.mapper.PermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.chenyx.entity.Permission">
+        <id column="perm_id" property="permId" />
+        <result column="perm_pid" property="permPid" />
+        <result column="perm_pcode" property="permPcode" />
+        <result column="perm_name" property="permName" />
+        <result column="perm_code" property="permCode" />
+        <result column="perm_type" property="permType" />
+        <result column="perm_url" property="permUrl" />
+        <result column="perm_status" property="permStatus" />
+        <result column="perm_show" property="permShow" />
+        <result column="perm_order" property="permOrder" />
+        <result column="perm_icon" property="permIcon" />
+        <result column="perm_remark" property="permRemark" />
+        <result column="perm_db_create_date" property="permDbCreateDate" />
+        <result column="perm_db_update_date" property="permDbUpdateDate" />
+        <result column="perm_login" property="permLogin" />
+        <result column="perm_kepp_alive" property="permKeppAlive" />
+        <result column="perm_control_url" property="permControlUrl" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        perm_id, perm_pid, perm_pcode, perm_name, perm_code, perm_type, perm_url, perm_status, perm_show, perm_order, perm_icon, perm_remark, perm_db_create_date, perm_db_update_date, perm_login, perm_kepp_alive, perm_control_url
+    </sql>
+
+</mapper>
