@@ -9,6 +9,4 @@ export interface TODO{
     todoDesc:string,
     todoStartTime:Date,
     todoEndTime:Date,
-
-
 }

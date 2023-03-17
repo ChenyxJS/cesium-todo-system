@@ -4,7 +4,7 @@
   <ShowLngLat ref="ShowLngLatRef" />
   <FilterPanel ref="FilterPanelRef" />
   <TodoListPanel ref="TodoListPanelRef" />
-  <EditPanel @getTodoData="getTodoData" ref="EditPanelRef" />
+  <EditPanel @getTodoData="getTodoData" :data="todoData" ref="EditPanelRef" />
 </template>
 
 <script lang="ts">
@@ -110,20 +110,5 @@ export default defineComponent({
   top: 11px;
   right: 11px;
 }
-.EntityInfoBox {
-  width: 240px;
-  height: 100px;
-  background: #ffffff;
-  border-radius: 5px;
-  padding: 10px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-}
 
-.EntityInfoBox .EntityInfoBox_title {
-  font-size: 14px;
-  font-weight: bold;
-  color: #000000;
-}
 </style>

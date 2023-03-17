@@ -3,11 +3,12 @@
  * @version: 
  * @Author: Chenyx
  * @Date: 2022-10-16 21:23:00
- * @LastEditors: Chenyx
- * @LastEditTime: 2022-11-13 18:24:29
+ * @LastEditors: Do not edit
+ * @LastEditTime: 2023-02-28 23:37:49
  */
 import axios from "axios"
 import Qs from "qs"
+
 const service = axios.create({
     withCredentials: true,
     timeout: 600000,

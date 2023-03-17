@@ -4,6 +4,8 @@ import { TODOPointTypeMap, getTODOPointType } from '@/utils/baseData'
 import { formatDate } from "@/utils/index";
 import { ref } from "vue";
 import { TODO } from '@/utils/Interface/TODO'
+import InfoBox from "@/views/CesiumIndex/components/InfoBox/index";
+import { en } from "element-plus/es/locale";
 
 // Cesium的token
 Cesium.Ion.defaultAccessToken = cesiumConfig.token
@@ -256,49 +258,13 @@ class CesiumController {
                     todo = item
                 }
             })
-
-            // 创建信息面板
-            const InfoBoxDom = document.createElement('div')
-            InfoBoxDom.id = 'EntityInfoBox_' + entity.id
-            InfoBoxDom.className = 'EntityInfoBox'
-            InfoBoxDom.setAttribute('style', 'display:none;font-size: 14px;color:#6C6E72;width: 240px;background: #E5EAF3;border-radius: 10px;padding: 10px;position: absolute;')
-            let infoDiv = ` 
-        <div id="close-btn${entity.id}" class="EntityInfoBox_close" style="position: absolute;top: 0;right: 0;margin: 2px 4px;">
-            <el-icon><Close /></el-icon>
-        </div>
-        <div class="EntityInfoBox_content" style="margin-top: 10px;display: flex;flex-direction:column;justify-content: center;align-items: flex-start;">
-           <div class="EntityInfoBox_content-item" style="margin: 5px;">
-             <span>事件名称：</span>
-             <span id="EntityInfoBox_content-item-text">${todo.todoTitle}</span>
-           </div>
-           <div class="EntityInfoBox_content-item" style="margin: 5px;">
-             <span>详细地址：</span>
-             <span id="EntityInfoBox_content-item-text">${todo.todoAddress}</span>
-           </div>
-           <div class="EntityInfoBox_content-item" style="margin: 5px;">
-             <span>开始时间：</span>
-             <span id="EntityInfoBox_content-item-text">${formatDate(String(todo.todoStartTime))}</span>
-           </div>
-           <div class="EntityInfoBox_content-item" style="margin: 5px;">
-             <span>结束时间：</span>
-             <span id="EntityInfoBox_content-item-text">${formatDate(String(todo.todoEndTime))}</span>
-           </div>
-            <div class="EntityInfoBox_content-item" style="margin: 5px;">
-             <span>事件详情：</span>
-             <span id="EntityInfoBox_content-item-text">${todo.todoDesc}</span>
-           </div>
-         </div>
-         <div class="triangle" style="border-top:0;border-left:20px solid #E5EAF3;border-right:0;border-bottom:30px solid transparent;position: absolute;bottom: -30px;left: calc(50% - 15px);width: 0;height: 0;"></div>
-         `
-            // 将信息面板添加到页面dom中
-            InfoBoxDom.innerHTML = infoDiv
-            document.getElementById('cesiumContainer')?.appendChild(InfoBoxDom)
-            // 给关闭按钮添加关闭点击事件
-            const closeBtn = document.getElementById(`close-btn${entity.id}`)
-            closeBtn?.addEventListener('click', () => {
-                InfoBoxDom.style.display = 'none'
+            InfoBox({
+                id:entity.id,
+                isShowInfoBox:true,
+                todo:todo
             })
         }
+        
         // 显示信息窗口
         this.showEntityInfoBox(entity, position)
     }
@@ -312,10 +278,6 @@ class CesiumController {
             return
         }
         var InfoBoxDom = document.getElementById('EntityInfoBox_' + entity.id)
-        // 若该实体的窗口已显示则不做任何操作
-        if (InfoBoxDom?.style.display === 'block') {
-            return
-        }
         // 显示该实体的信息窗口，并隐藏其他窗口
         this.closeAllWindows()
         if (InfoBoxDom) {
@@ -329,7 +291,7 @@ class CesiumController {
             this.viewer.scene.globe.ellipsoid
         )
         // 设置窗口的位置
-        this.viewer.scene.postRender.addEventListener((percentage: any) => {
+        this.viewer.scene.postRender.addEventListener(() => {
             // 若窗口是显示状态，转换到屏幕坐标
             if (InfoBoxDom?.style.display == 'block') {
                 var winpos = this.viewer.scene.cartesianToCanvasCoordinates(earthPosition)
