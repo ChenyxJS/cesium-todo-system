@@ -15,3 +15,19 @@ export function addTodoData(data:any){
         data
     })
 }
+
+export function updateTodoData(data:any){
+    return request({
+        url:"/web/todo/update",
+        method:"POST",
+        data
+    })
+}
+
+export function deleteTodoData(data:any){
+    return request({
+        url:"/web/todo/delete",
+        method:"POST",
+        data
+    })
+}

@@ -1,7 +1,9 @@
 <template>
-  <div v-show="isShow" class="edit-panel">
+  <div v-show="editPanelStore.visible" class="edit-panel">
     <el-icon @click="closeEditPanel" class="close"><Close /></el-icon>
-    <div class="edit-panel_title">创建一个TODO事项吧</div>
+    <div class="edit-panel_title">
+      {{ editPanelStore.isEdit ? "编辑" : "创建" }}一个TODO事项
+    </div>
     <el-form
       ref="formRef"
       :model="form"
@@ -39,7 +41,7 @@
         <el-col :span="11">
           <el-date-picker
             value-format="YYYY-MM-DD HH:mm:ss"
-            v-model="form.todoStartTime"
+            v-model="startTime"
             type="datetime"
             placeholder="请选择开始时间"
           />
@@ -49,7 +51,7 @@
         <el-col :span="11">
           <el-date-picker
             value-format="YYYY-MM-DD HH:mm:ss"
-            v-model="form.todoEndTime"
+            v-model="endTime"
             type="datetime"
             placeholder="请选择结束时间"
           />
@@ -59,7 +61,7 @@
         <el-input v-model="form.todoDesc" type="textarea" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">创 建</el-button>
+        <el-button type="primary" @click="onSubmit">提 交</el-button>
         <el-button @click="closeEditPanel">取 消</el-button>
       </el-form-item>
     </el-form>
@@ -67,63 +69,49 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { TODOPointTypeMap } from "@/utils/baseData";
 import { ElMessage } from "element-plus";
-import * as Cesium from "cesium";
 import { TODO } from "@/utils/Interface/TODO";
-import { addTodoData } from "@/api/Todo/index";
+import { addTodoData, updateTodoData } from "@/api/Todo/index";
+import { useEditPanelStore } from "@/store/EditPanel";
+import { formatDate } from "@/utils";
 
 export default defineComponent({
   name: "EditPanel",
+  props: ["todoData"],
   setup(props, cxt) {
     const _CController = ref();
-    const editEntity = ref();
     let isShow = ref<boolean>();
     const TODOTypeMap = ref(TODOPointTypeMap);
-    let form = ref<TODO>({
-      todoId: 0,
-      todoType: 1,
-      todoTitle: "todoTitle",
-      todoLng: 0,
-      todoLat: 0,
-      todoAlt: 0,
-      todoAddress: "todoAddress",
-      todoDesc: "todoDesc",
-      todoStartTime: new Date(),
-      todoEndTime: new Date(),
+    const editPanelStore = useEditPanelStore();
+    let startTime = ref('')
+    let endTime = ref('')
+    let form = ref<TODO>(editPanelStore.todo);
+
+    watch(editPanelStore, (newVal, oldVal) => {
+      form.value = newVal.todo;
+      startTime.value = formatDate(String(newVal.todo.todoStartTime));
+      endTime.value = formatDate(String(newVal.todo.todoEndTime));
     });
 
     /**
-     * @Descripttion: 初始化EditPanel
-     * @msg:
+     * @description: 初始化EditPanel
      * @param {*} CController
-     * @param {*} clickHandler
      * @return {*}
      */
-    const initEditPanel = (CController: any, clickHandler: any) => {
+    const initEditPanel = (CController: any) => {
       _CController.value = CController;
-      // 监听左键抬起事件
-      clickHandler.setInputAction((e: any) => {
-        // 延迟0.1s，等到点击事件改变isShowEditPanel的值后，再获取isShowEditPanel值以及获取TODO类数据
-        setTimeout(() => {
-          editEntity.value = _CController.value.getSelectedEntity();
-          form.value = _CController.value.getEditorEntityData();
-          isShow.value = _CController.value.getIsShowEditPanel();
-        }, 100);
-      }, Cesium.ScreenSpaceEventType.LEFT_UP);
     };
-
     /**
      * @Descripttion: 关闭EditPanel
      * @msg:
      * @return {*}
      */
     const closeEditPanel = () => {
-      isShow.value = false;
-      _CController.value.closeEditPanel();
       // 移除编辑实体
-      _CController.value.removeEntity(editEntity.value);
+      _CController.value.removeEntity(editPanelStore.editEntity);
+      editPanelStore.closeEditPanel();
     };
 
     /**
@@ -132,28 +120,58 @@ export default defineComponent({
      * @return {*}
      */
     const onSubmit = () => {
-      addTodoData(form.value).then((res: any) => {
-        if (res.success) {
-          // 提交成功后提示一下
-          ElMessage({
-            showClose: true,
-            type: "success",
-            message: "操作成功！",
+      editPanelStore.isEdit
+        ? updateTodoData({
+          todoId: form.value.todoId,
+          todoTitle: form.value.todoTitle,
+          todoLng: form.value.todoLng,
+          todoLat: form.value.todoLat,
+          todoAddress: form.value.todoAddress,
+          todoType: form.value.todoType,
+          todoDesc: form.value.todoDesc,
+          todoStartTime: startTime.value,
+          todoEndTime: endTime.value
+        }).then((res: any) => {
+            if (res.success) {
+              // 提交成功后提示一下
+              ElMessage({
+                showClose: true,
+                type: "success",
+                message: "操作成功！",
+              });
+              // 关闭EditPanel
+              closeEditPanel();
+              // 重新获取数据刷新实体数据
+              cxt.emit("getTodoData");
+            }
+          })
+        : addTodoData(form.value).then((res: any) => {
+            if (res.success) {
+              // 提交成功后提示一下
+              ElMessage({
+                showClose: true,
+                type: "success",
+                message: "操作成功！",
+              });
+              // 关闭EditPanel
+              closeEditPanel();
+              // 重新获取数据刷新实体数据
+              cxt.emit("getTodoData");
+            }
           });
-          // 关闭EditPanel
-          closeEditPanel();
-          // 重新获取数据刷新实体数据
-          cxt.emit("getTodoData");
-        }
-      });
     };
+    
+   
     return {
       form,
       TODOTypeMap,
       isShow,
       closeEditPanel,
       onSubmit,
+      editPanelStore,
       initEditPanel,
+      startTime,
+      endTime,
     };
   },
 });

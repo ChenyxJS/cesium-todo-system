@@ -4,11 +4,14 @@
   <ShowLngLat ref="ShowLngLatRef" />
   <FilterPanel ref="FilterPanelRef" />
   <TodoListPanel ref="TodoListPanelRef" />
-  <EditPanel @getTodoData="getTodoData" :data="todoData" ref="EditPanelRef" />
+  <EditPanel
+    @getTodoData="getTodoData"
+    ref="EditPanelRef"
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref, watch } from "vue";
 import CesiumController from "@/utils/Cesium/index";
 import ModePanel from "./components/ModePanel.vue";
 import ShowLngLat from "@/components/ShowLngLat.vue";
@@ -17,7 +20,7 @@ import TodoListPanel from "./components/TodoListPanel.vue";
 import EditPanel from "./components/EditPanel.vue";
 import { getAllTodoData } from "@/api/Todo/index";
 import { Page } from "@/utils/Interface/Page";
-
+import { useInfoBoxStore } from "@/store/InfoBox";
 
 export default defineComponent({
   name: "CesiumIndex",
@@ -36,6 +39,12 @@ export default defineComponent({
     const FilterPanelRef = ref();
     const TodoListPanelRef = ref();
     const EditPanelRef = ref();
+    const todoData = ref([]);
+    const infoBoxStore = useInfoBoxStore();
+
+    watch(infoBoxStore, (newVal, oldVal) => {
+      getTodoData()
+    });
 
     onMounted(() => {
       init();
@@ -53,8 +62,8 @@ export default defineComponent({
       FilterPanelRef.value.initFilterPanel(CController);
       // 初始化TODO列表组件
       TodoListPanelRef.value.initTodoListPanel(CController);
-      // 初始化编辑窗口组件
-      EditPanelRef.value.initEditPanel(CController, clickHandler);
+      // 初始化编辑组件
+      EditPanelRef.value.initEditPanel(CController);
       // 初始化实时坐标组件
       ShowLngLatRef.value.initCesiumHandler(viewer.value);
       // 获取数据
@@ -67,13 +76,14 @@ export default defineComponent({
         limit: 0,
       }).then((res: any) => {
         if (res.success) {
+          todoData.value = res.root;
           CController.initEntityMap(res.root);
           let page: Page = {
             limit: 10,
             current: 1,
             total: res.totalSize,
           };
-          TodoListPanelRef.value.initData(res.root,page);
+          TodoListPanelRef.value.initData(res.root, page);
         }
       });
     };
@@ -86,6 +96,7 @@ export default defineComponent({
       TodoListPanelRef,
       EditPanelRef,
       getTodoData,
+      todoData,
     };
   },
 });
@@ -110,5 +121,4 @@ export default defineComponent({
   top: 11px;
   right: 11px;
 }
-
 </style>

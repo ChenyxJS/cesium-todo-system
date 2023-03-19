@@ -7,7 +7,13 @@
     <div class="filter">
       <el-row>
         <el-col>
-          <el-input style="margin-left:10px" clearable v-model="filterForm.title" placeholder="请输入TODO标题">
+          <el-input
+            style="margin-left: 10px"
+            clearable
+            v-model="filterForm.title"
+            @change="filter"
+            placeholder="请输入TODO标题"
+          >
             <template #prepend>
               <el-button icon="Search" />
             </template>
@@ -17,7 +23,7 @@
     </div>
     <json-table
       ref="myJsonTable"
-      :table-data="tableData"
+      :table-data="_tableData"
       :page="page"
       :table-height="300"
       @current-change="currentPageChange"
@@ -30,7 +36,6 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import JsonTable from "./TodoListTable.vue";
-import { ElMessage } from "element-plus";
 import { Page } from "@/utils/Interface/Page";
 import { TODO } from "@/utils/Interface/TODO";
 
@@ -43,6 +48,7 @@ export default defineComponent({
     let isShow = ref<boolean>(false);
     const handler = ref();
     let tableData = ref();
+    let _tableData = ref();
     let filterForm = ref({
       title: "",
     });
@@ -57,6 +63,7 @@ export default defineComponent({
     };
     const initData = (data?: any, p?: Page) => {
       tableData.value = data;
+      _tableData.value = data;
       if (p) page.value = p;
     };
     const currentPageChange = (current: any) => {
@@ -78,6 +85,13 @@ export default defineComponent({
       }
       isShow.value = !isShow.value;
     };
+    const filter = (e: any) => {
+      // 筛选出tableData中带有title的
+      let title = filterForm.value.title;
+      _tableData.value = tableData.value.filter((item: TODO) => {
+        return item.todoTitle.indexOf(title) > -1;
+      });
+    };
     return {
       initTodoListPanel,
       currentPageChange,
@@ -85,8 +99,10 @@ export default defineComponent({
       initData,
       showPanel,
       tableData,
+      _tableData,
       page,
       filterForm,
+      filter,
     };
   },
 });
@@ -107,6 +123,7 @@ export default defineComponent({
   align-items: center;
   background: #fff;
   border-radius: 0 15px 0 0;
+  // transition: all 0.5s;
   .top {
     width: 100%;
     height: 40px;
@@ -136,7 +153,6 @@ export default defineComponent({
 .todo-list-panel_open {
   width: 500px;
   height: auto;
-  transition: all 0.5s;
   .top .close-icon {
     transform: rotate(-45deg);
     transition: all 0.5s ease-in-out;

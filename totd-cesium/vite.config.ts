@@ -2,7 +2,7 @@
  * @Author: chenyx
  * @Date: 2022-12-28 19:54:03
  * @LastEditors: Do not edit
- * @LastEditTime: 2023-03-16 23:51:15
+ * @LastEditTime: 2023-03-19 17:13:02
  * @FilePath: /totd-cesium/vite.config.ts
  */
 import { defineConfig } from 'vite'
@@ -20,9 +20,9 @@ export default defineConfig({
     proxy: {
       '/api': {
         // 线上地址
-        // target: "http://121.41.8.136:8080",
+        target: "http://121.41.8.136:8080",
         // 本地地址
-        target: "http://127.0.0.1:8080",
+        // target: "http://127.0.0.1:8080",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
